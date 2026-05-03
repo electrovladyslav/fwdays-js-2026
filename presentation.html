@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Еволюція Spec-driven development — Влад Єрмолін · JavaScript fwdays'26</title>
+
+<!-- Syntax highlighting: Prism.js via CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markdown.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+
+<style>
+  :root {
+    --bg: #0e1117;
+    --bg-elev: #161b22;
+    --fg: #f0f6fc;
+    --fg-muted: #8b949e;
+    --accent: #4fd1c5;
+    --accent-soft: rgba(79, 209, 197, 0.12);
+    --border: #30363d;
+    --code-bg: #161b22;
+    --danger: #ff7b72;
+    --success: #7ee787;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    overflow: hidden;
+  }
+
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 4rem 6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    overflow-y: auto;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .slide h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .slide h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .slide h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    color: var(--accent);
+  }
+
+  .slide p, .slide li {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    margin: 0 0 1rem 0;
+  }
+
+  .slide ul, .slide ol {
+    padding-left: 1.5rem;
+    margin: 0.5rem 0 1.5rem 0;
+  }
+
+  .slide li {
+    margin-bottom: 0.75rem;
+  }
+
+  .slide .subtitle {
+    font-size: 2rem;
+    color: var(--fg-muted);
+    font-weight: 400;
+    margin-bottom: 3rem;
+  }
+
+  .slide .muted {
+    color: var(--fg-muted);
+  }
+
+  .slide .accent {
+    color: var(--accent);
+  }
+
+  .slide .tag {
+    display: inline-block;
+    font-size: 1rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  .slide blockquote {
+    font-size: 2rem;
+    font-style: italic;
+    line-height: 1.4;
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    margin: 1rem 0;
+    color: var(--fg);
+  }
+
+  .slide blockquote.big {
+    font-size: 3rem;
+    font-weight: 600;
+    font-style: normal;
+    border-left: none;
+    text-align: center;
+    padding: 2rem 0;
+    line-height: 1.25;
+  }
+
+  pre[class*="language-"] {
+    font-size: 1.1rem !important;
+    padding: 1.25rem 1.5rem !important;
+    border-radius: 10px !important;
+    background: var(--code-bg) !important;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    margin: 0.75rem 0;
+  }
+
+  code {
+    font-family: "JetBrains Mono", "Fira Code", Menlo, Monaco, Consolas, monospace;
+  }
+
+  .slide code:not([class*="language-"]) {
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 0.15rem 0.45rem;
+    border-radius: 5px;
+    font-size: 0.92em;
+  }
+
+  .cols-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.75rem;
+  }
+
+  .card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .kbd {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.85em;
+    background: var(--bg-elev);
+    color: var(--fg-muted);
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    font-size: 0.9rem;
+    color: var(--fg-muted);
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .footer .brand {
+    font-weight: 600;
+  }
+
+  .progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--accent);
+    transition: width 0.25s ease;
+    z-index: 100;
+  }
+
+  /* Flow boxes (used for lifecycle / decision tree) */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 2rem 0;
+  }
+
+  .flow-node {
+    background: var(--bg-elev);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    min-width: 180px;
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  .flow-node.hero {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .flow-node small {
+    display: block;
+    font-size: 0.85rem;
+    font-family: -apple-system, sans-serif;
+    color: var(--fg-muted);
+    margin-top: 0.25rem;
+  }
+
+  .flow-arrow {
+    color: var(--fg-muted);
+    font-size: 1.5rem;
+  }
+
+  /* Avatar (slide 2) */
+  .about-wrap {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .avatar {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent);
+    box-shadow: 0 0 0 2px var(--bg), 0 10px 40px rgba(79, 209, 197, 0.2);
+  }
+
+  /* Toy Story meme (slide 4) */
+  .meme-image {
+    display: block;
+    max-width: 65%;
+    max-height: 45vh;
+    margin: 1rem auto;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Matt Pocock portrait (slide 8) */
+  .author-portrait {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent);
+    float: left;
+    margin: 0 1.5rem 0.5rem 0;
+  }
+
+  .warn {
+    font-size: 0.95rem;
+    color: var(--fg-muted);
+    border-left: 3px solid var(--accent);
+    padding-left: 1rem;
+    margin-top: 1rem;
+  }
+
+  .cols-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .title-slide {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .title-slide h1 {
+    font-size: 5rem;
+    background: linear-gradient(135deg, var(--fg) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 2rem;
+  }
+
+  .title-slide .meta {
+    margin-top: 4rem;
+    font-size: 1.25rem;
+    color: var(--fg-muted);
+  }
+
+  .decision-tree {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1rem;
+    line-height: 1.7;
+    background: var(--bg-elev);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  .legend-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+  }
+
+  .legend-strip .chip {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+  }
+
+  .legend-strip .chip strong {
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  .dual-column-era {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .dual-column-era .era {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .dual-column-era h3 {
+    color: var(--accent);
+    margin-top: 0;
+  }
+
+  .contacts {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin: 3rem 0;
+    flex-wrap: wrap;
+  }
+
+  .contacts .contact {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  .contacts .contact .label {
+    display: block;
+    color: var(--fg-muted);
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .contacts .contact .value {
+    color: var(--accent);
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  .qr-placeholder {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    background: var(--bg-elev);
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--fg-muted);
+    font-style: italic;
+    font-size: 0.9rem;
+    margin: 0 1rem;
+  }
+
+  .qr-row {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+
+  .qr-row .qr-wrap {
+    text-align: center;
+  }
+
+  .qr-row .qr-wrap .caption {
+    margin-top: 0.75rem;
+    color: var(--fg-muted);
+    font-size: 1rem;
+  }
+
+  .small { font-size: 1.15rem; }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1 — Title / Hook -->
+  <section class="slide title-slide active" data-slide="1">
+    <h1>Еволюція Spec-driven development</h1>
+    <p class="subtitle">Від Plan Mode до формальних специфікацій та OpenSpec</p>
+    <div class="meta">
+      <p><strong>Влад Єрмолін</strong> · Solution Lead @ Master of Code</p>
+      <p class="muted">JavaScript fwdays'26 · Київ · 23 травня 2026</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 — Про мене -->
+  <section class="slide" data-slide="2">
+    <span class="tag">Про мене</span>
+    <h2>Влад Єрмолін</h2>
+    <div class="about-wrap">
+      <img src="avatar.jpg" alt="Vlad Yermolin" class="avatar">
+      <ul>
+        <li>Solution Lead @ <strong>Master of Code</strong></li>
+        <li>6+ років у фронтенді → зараз архітектура AI-агентів</li>
+        <li>2 коти, йога, Київ</li>
+        <li>GitHub: <code>electrovladyslav</code> · Telegram: <code>@dev_money_yoga</code></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 — Що ви заберете з цього залу -->
+  <section class="slide" data-slide="3">
+    <h2>Що ви заберете з цього залу</h2>
+    <ul>
+      <li>4 підходи до Spec-driven development — коли який застосовувати</li>
+      <li>Чесне порівняння з реального досвіду (не Twitter-хайп)</li>
+      <li>Шаблони ADR і OpenSpec, готові до використання</li>
+      <li>Посилання на running example — <code>yoga-dashboard</code></li>
+    </ul>
+    <p class="warn small">
+      Натхнення: <a href="https://fwdays.com/event/react-fwdays-2025/review/blueprint-driven-development-with-ai-and-tdd" class="accent" style="color: var(--accent);">Blueprint-driven development with AI and TDD</a> (React fwdays'25)
+    </p>
+  </section>
+
+  <!-- SLIDE 4 — Справжня проблема: context transfer -->
+  <section class="slide" data-slide="4">
+    <h2>Проблема <span class="muted">не</span> в промптингу.</h2>
+    <h2 class="accent">Проблема — у передачі <em>контексту</em>.</h2>
+    <img src="meme.jpg" alt="Toy Story meme: context is everywhere" class="meme-image">
+    <p class="muted small">Ідея в моїй голові → AI-агент. Як передати? Три симптоми того, що контекст не долетів:</p>
+    <ul class="small">
+      <li>Галюцинації (API, яких не існує)</li>
+      <li>Втрата контексту в довгих сесіях</li>
+      <li>Inconsistency між запусками</li>
+    </ul>
+  </section>
+
+  <!-- SLIDE 5 — Чому особливо боляче для JS-розробника -->
+  <section class="slide" data-slide="5">
+    <h2>Чому це <em>особливо</em> боляче для JS-розробника</h2>
+    <ul>
+      <li>JavaScript ecosystem = постійна зміна API <span class="muted">(Next.js App Router, Bun/Deno, нові TS features, framework churn)</span></li>
+      <li class="accent"><strong>AI без контексту пише код під застарілі версії.</strong></li>
+    </ul>
+    <h3 style="margin-top: 2rem;">Counter-measure: <code>Context7</code> MCP</h3>
+    <pre><code class="language-json">"mcpServers": {
+  "context7": {
+    "url": "https://mcp.context7.com/mcp",
+    "headers": {}
+  }
+}</code></pre>
+    <p class="muted small">Context7 = контекст для <strong>бібліотек</strong>. Решта доповіді = контекст для <strong>твого проекту</strong>.</p>
+  </section>
+
+  <!-- SLIDE 6 — North Star -->
+  <section class="slide title-slide" data-slide="6">
+    <blockquote class="big">
+      Якість коду <span class="accent">на виході</span><br>
+      = якість специфікації <span class="accent">на вході</span>.
+    </blockquote>
+  </section>
+
+  <!-- SLIDE 7 — Plan Mode intro -->
+  <section class="slide" data-slide="7">
+    <span class="tag">Етап 1</span>
+    <h2>Plan Mode <span class="muted" style="font-size: 1.75rem; font-weight: 400;">· Cursor · Claude Code</span></h2>
+    <p class="small muted">Агент читає код → задає уточнення → пропонує план → ти approve.</p>
+<pre><code class="language-bash">● I have a clear picture. Before drafting the final plan,
+  let me confirm a few direction decisions.
+
+  ← □ Aesthetic   □ Styling   □ Scope   □ Dark mode   ✓ Submit →
+
+  Which aesthetic direction fits the yoga dashboard best?
+
+    1. Calm wellness  (Recommended)
+    2. Modern minimal
+    3. Warm earthy
+
+  ┌─ Preview ─────────────────────────────────────┐
+  │ Palette:                                      │
+  │   bg:      #F7F5F0   (warm off-white)         │
+  │   surface: #FFFFFF                            │
+  │   primary: #6B8E7F   (sage)                   │
+  │   accent:  #D4A574   (warm sand)              │
+  │   text:    #2D3A36                            │
+  │   border:  #E5E2DB                            │
+  └───────────────────────────────────────────────┘
+
+  Chat about this
+  Skip interview and plan immediately</code></pre>
+    <p class="muted small">Running example: <code>yoga-dashboard</code>. Агент сам пропонує рекомендацію — але тільки після того, як витягне з тебе напрямок.</p>
+  </section>
+
+  <!-- SLIDE 8 — Plan Mode inconsistent + grill-me -->
+  <section class="slide" data-slide="8">
+    <h2>Посилюємо Plan Mode через <span class="accent">custom skills</span></h2>
+    <p class="small muted">Plan Mode сам <em>не витягує</em> контекст — він <strong>припускає</strong>. Рішення: skill, що примушує агента інтерв'ювати тебе.</p>
+    <div style="margin-top: 1.25rem;">
+      <img src="Matt pocock.png" alt="Matt Pocock" class="author-portrait">
+      <h3 style="margin-bottom: 0.25rem;"><code>grill-me</code> by Matt Pocock</h3>
+      <p class="small muted" style="margin-top: 0;">
+        <a href="https://github.com/mattpocock/skills/tree/main/grill-me" style="color: var(--accent);">github.com/mattpocock/skills/grill-me</a> ·
+        <a href="https://www.youtube.com/watch?v=EJyuu6zlQCg" style="color: var(--accent);">YouTube demo</a>
+      </p>
+    </div>
+    <div style="clear: both;"></div>
+<pre><code class="language-markdown">---
+name: grill-me
+description: Interview the user relentlessly about a plan or design
+  until reaching shared understanding, resolving each branch of the
+  decision tree. Use when user wants to stress-test a plan, get
+  grilled on their design, or mentions "grill me".
+---
+
+Interview me relentlessly about every aspect of this plan until we
+reach a shared understanding. Walk down each branch of the design
+tree, resolving dependencies between decisions one-by-one. For each
+question, provide your recommended answer.
+
+Ask the questions one at a time.
+
+If a question can be answered by exploring the codebase, explore
+the codebase instead.</code></pre>
+  </section>
+
+  <!-- SLIDE 9 — Plan Mode breaks -->
+  <section class="slide" data-slide="9">
+    <h2>Plan Mode: де все одно ламається</h2>
+    <div class="cols-2" style="align-items: center;">
+      <div>
+        <ul>
+          <li>Довгі сесії — контекст <strong>розмивається</strong> з кожним turn</li>
+          <li>Міжфайлові зміни — агент забуває, що робив 10 хв тому</li>
+          <li class="accent"><strong>Немає persistence</strong> — план помирає разом із сесією</li>
+        </ul>
+        <p class="warn small">Потрібна довготривала пам'ять. Далі →</p>
+      </div>
+      <img src="forget-meme.jpeg" alt="Forgetting meme" class="meme-image" style="max-width: 100%; max-height: 55vh; margin: 0;">
+    </div>
+  </section>
+
+  <!-- SLIDE 10 — ADR intro -->
+  <section class="slide" data-slide="10">
+    <span class="tag">Етап 2</span>
+    <h2>Потрібна "пам'ять" — знайомтесь, ADR</h2>
+    <h3>Architecture Decision Records</h3>
+    <ul>
+      <li>Короткий markdown: <strong>context</strong> → <strong>decision</strong> → <strong>consequences</strong></li>
+      <li>Живе в кодовій базі: <code>docs/adr/</code></li>
+      <li>Приклад з <code>yoga-dashboard</code>: <em>ADR-003: Why we chose Server Actions over API routes</em></li>
+    </ul>
+    <p class="muted small">Ідея 2011 року (Michael Nygard). Друга молодість — тепер читають не лише люди, а й агенти.</p>
+  </section>
+
+  <!-- SLIDE 11 — Teaching agent to write ADRs -->
+  <section class="slide" data-slide="11">
+    <h2>Як навчити агента створювати ADR</h2>
+    <p class="small">Додаєш <code>CLAUDE.md</code> / <code>.cursorrules</code> з інструкцією:</p>
+    <pre><code class="language-markdown">## Architecture decisions
+
+When you make a non-trivial architectural choice,
+create or update an ADR in docs/adr/.
+Format: context → decision → consequences.
+Link to the ADR from any PR it affects.</code></pre>
+    <ul class="small">
+      <li>Агент сам заповнює ADR під час роботи</li>
+      <li>Наступна сесія → агент читає <code>docs/adr/</code> → розуміє історію рішень</li>
+    </ul>
+  </section>
+
+  <!-- SLIDE 12 — ADR pros/cons -->
+  <section class="slide" data-slide="12">
+    <h2>ADR: плюси і мінуси</h2>
+    <div class="cols-2">
+      <div class="card">
+        <h3 style="color: var(--success);">✓ Плюси</h3>
+        <ul class="small">
+          <li>Легко впровадити, низький поріг входу</li>
+          <li>Люди теж читають — команда виграє</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="color: var(--danger);">✗ Мінуси</h3>
+        <ul class="small">
+          <li>Non-standard формат — кожна команда винаходить свій</li>
+          <li>Агент не завжди знає, <em>коли</em> створювати ADR</li>
+          <li>Залишається відкрите: що з <strong>feature-level</strong> специфікаціями?</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 13 — Spec Kit (collapsed) -->
+  <section class="slide" data-slide="13">
+    <span class="tag">Етап 2.5</span>
+    <h2>GitHub Spec Kit — спробували, не зайшло</h2>
+    <p class="subtitle">"А що як формалізувати все?"</p>
+    <ul class="small">
+      <li>Структурована ієрархія: project → epic → feature → task</li>
+      <li>Ідея приваблива, реальність — <strong>too heavy</strong> для нашої команди</li>
+      <li>На довгій дистанції <strong>важко підтримувати</strong> — документи розбігаються з кодом</li>
+    </ul>
+    <blockquote>Good idea, wrong weight class. Для enterprise з compliance — працює. Для команди ≤ 5 — overhead &gt; value.</blockquote>
+  </section>
+
+  <!-- SLIDE 14 — OpenSpec what it is -->
+  <section class="slide" data-slide="14">
+    <span class="tag">Етап 3</span>
+    <h2>OpenSpec</h2>
+    <blockquote class="big" style="text-align: left; font-size: 2rem; padding: 1rem 0;">
+      A <span class="accent">YC-backed startup</span> (W'26) by Fission-AI — <span class="accent">lightweight and adaptable</span>.
+    </blockquote>
+    <div class="small muted" style="margin-top: 2rem;">
+      <p><strong>Core promise:</strong> "Agree before you build"</p>
+      <p><strong>Philosophy:</strong> <em>fluid not rigid · iterative not waterfall · built for brownfield not just greenfield</em></p>
+      <p><strong>Positioning:</strong> vs Spec Kit (heavyweight, Python setup) · vs Kiro (IDE-locked, Claude-only)</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 15 — Anatomy -->
+  <section class="slide" data-slide="15">
+    <h2>Одна change — одна папка</h2>
+    <pre><code class="language-bash">openspec/changes/add-weekly-streak-badge/
+  proposal.md    # чому і що змінюється
+  specs/         # requirements + scenarios
+  design.md      # технічний підхід
+  tasks.md       # implementation checklist</code></pre>
+    <p class="small">Мінімально — <strong>4 файли, кожен з конкретною роллю</strong>.</p>
+    <p class="muted small">Running example: feature з <code>yoga-dashboard</code>.</p>
+  </section>
+
+  <!-- SLIDE 16 — Two entry modes -->
+  <section class="slide" data-slide="16">
+    <h2>Дві двері в OpenSpec</h2>
+    <p class="muted small">Залежно від того, наскільки ясно ти бачиш задачу.</p>
+    <div class="cols-2" style="margin-top: 1.5rem;">
+      <div class="card">
+        <h3>A · Propose</h3>
+        <p class="small muted">Ти знаєш, що хочеш.</p>
+        <pre><code class="language-bash">/opsx:propose \
+  "add weekly streak badge"</code></pre>
+        <p class="small">→ proposal, specs, design, tasks</p>
+      </div>
+      <div class="card">
+        <h3>B · Explore</h3>
+        <p class="small muted">Ти ще не знаєш, що саме хочеш.</p>
+        <pre><code class="language-bash">/opsx:explore [topic]</code></pre>
+        <p class="small">→ розмова, діаграми, без artifacts. Переходить у <code>propose</code>, коли ясність прийде.</p>
+      </div>
+    </div>
+    <p class="muted small" style="margin-top: 1rem;">Docs: <a href="https://github.com/Fission-AI/OpenSpec/blob/main/docs/commands.md#opsxexplore" style="color: var(--accent);">commands.md#opsxexplore</a></p>
+  </section>
+
+  <!-- SLIDE 17 — Lifecycle HERO -->
+  <section class="slide" data-slide="17">
+    <h2>Lifecycle: specs as <span class="accent">throwaway artifacts</span></h2>
+    <div class="flow">
+      <div class="flow-node">
+        <strong>/opsx:propose</strong>
+        <small>spec IN</small>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <strong>/opsx:apply</strong>
+        <small>code OUT</small>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node hero">
+        <strong>/opsx:archive</strong>
+        <small>forget</small>
+      </div>
+    </div>
+    <div style="text-align: center; font-family: monospace; color: var(--fg-muted); margin: 1rem 0;">
+      ↓<br>
+      openspec/changes/archive/<br>
+      2026-05-23-streak-badge/
+    </div>
+    <blockquote class="big" style="font-size: 2.25rem; margin-top: 2rem;">
+      Ти <span class="accent">НЕ підтримуєш</span> документацію.<br>
+      Archive — і рухаєшся далі.
+    </blockquote>
+  </section>
+
+  <!-- SLIDE 18 — Customization -->
+  <section class="slide" data-slide="18">
+    <h2>OpenSpec — це фреймворк, <span class="muted">не монолит</span></h2>
+    <p class="small muted">Дефолтів достатньо на 80% задач. Решта — розширюється.</p>
+    <div class="cols-2" style="margin-top: 1.5rem;">
+      <div class="card">
+        <h3>Custom skills</h3>
+        <ul class="small">
+          <li>Brownfield-аналіз (initial specs з existing TS)</li>
+          <li>Testing-first flow</li>
+          <li>Команд-специфічні: a11y-check, code review</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Agent personas</h3>
+        <ul class="small">
+          <li>Frontend specialist (React/Next, Tailwind, a11y)</li>
+          <li>API / backend agent (Server Actions, DB, types)</li>
+          <li>Reviewer agent (читає PR проти acceptance)</li>
+        </ul>
+      </div>
+    </div>
+    <p class="small muted" style="margin-top: 1rem;">Один OpenSpec → <strong>кілька агентів з різними personas</strong> → результат когерентний.</p>
+    <p class="small muted">Docs: <a href="https://github.com/Fission-AI/OpenSpec/blob/main/docs/customization.md" style="color: var(--accent);">customization.md</a></p>
+  </section>
+
+  <!-- SLIDE 19 — Decision tree (merged) -->
+  <section class="slide" data-slide="19">
+    <h2>Один decision tree, 4 відповіді</h2>
+    <div class="decision-tree">Я використовую AI для цієї задачі. Який підхід?
+                      │
+                      ▼
+          ┌──────────────────────────┐
+          │ Одноразова, &lt; 100 рядків? │
+          └──────────┬───────────────┘
+              YES ───┤── NO
+               ▼     │
+      ┌──────────┐   ▼
+      │ Plan Mode│   ┌──────────────────────────┐
+      │ + grill  │   │ Архітектурне рішення?    │
+      └──────────┘   │ (library, pattern)       │
+                     └────────────┬─────────────┘
+                         YES ─────┤── NO
+                          ▼       │
+                     ┌──────┐     ▼
+                     │ ADR  │     ┌────────────────────────┐
+                     └──────┘     │ Team &gt;10, compliance?   │
+                                  └──────────┬─────────────┘
+                                       YES ──┤── NO
+                                        ▼    │
+                                   ┌─────────┐  ▼
+                                   │ Spec Kit│  ┌───────────┐
+                                   └─────────┘  │ OpenSpec  │
+                                                │ (default) │
+                                                └───────────┘</div>
+    <div class="legend-strip">
+      <div class="chip"><strong>Plan Mode</strong>session-scoped, lightweight</div>
+      <div class="chip"><strong>ADR</strong>persistent, architecture</div>
+      <div class="chip"><strong>Spec Kit</strong>enterprise, compliance</div>
+      <div class="chip"><strong>OpenSpec</strong>balanced, default choice</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 20 — New role (testimonial) -->
+  <section class="slide" data-slide="20">
+    <h2>Нова роль розробника</h2>
+    <p class="subtitle">Від "coder" до "spec architect"</p>
+    <blockquote>
+      "Я особисто <strong>майже не пишу код сам</strong> останнім часом.<br>
+      Я пишу документацію, перечитую, переписую. І це складно.<br>
+      Іноді — реально складніше, ніж написати цей же код руками.<br>
+      Але коли documentation finally правильна — код виходить таким, як треба."
+    </blockquote>
+    <div class="dual-column-era">
+      <div class="era">
+        <h3>2020</h3>
+        <ul class="small">
+          <li>IDE, keyboard shortcuts</li>
+          <li>StackOverflow</li>
+          <li><code>console.log</code></li>
+        </ul>
+      </div>
+      <div class="era">
+        <h3>2026</h3>
+        <ul class="small">
+          <li>Markdown editor</li>
+          <li><code>/opsx:propose</code></li>
+          <li>Review tab, review tab, review tab</li>
+        </ul>
+      </div>
+    </div>
+    <p class="warn small">Це <strong>не легша</strong> робота. Це <strong>інша</strong> робота.</p>
+  </section>
+
+  <!-- SLIDE 21 — Thanks / Q&A -->
+  <section class="slide title-slide" data-slide="21">
+    <h1 style="font-size: 4rem;">Дякую · <span class="accent">Питання?</span></h1>
+    <div class="contacts">
+      <div class="contact">
+        <span class="label">GitHub</span>
+        <span class="value">electrovladyslav</span>
+      </div>
+      <div class="contact">
+        <span class="label">Telegram</span>
+        <span class="value">@dev_money_yoga</span>
+      </div>
+    </div>
+    <div class="qr-row">
+      <div class="qr-wrap">
+        <div class="qr-placeholder">QR: slides repo</div>
+        <div class="caption">Слайди · outline</div>
+      </div>
+      <div class="qr-wrap">
+        <div class="qr-placeholder">QR: yoga-dashboard</div>
+        <div class="caption">Running example</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="footer">
+  <div class="brand">Vlad Yermolin · fwdays'26</div>
+  <div>
+    <span class="kbd">←</span> <span class="kbd">→</span> navigate ·
+    <span class="kbd">F</span> fullscreen ·
+    <span class="kbd">Home</span>/<span class="kbd">End</span> jump
+  </div>
+  <div><span id="counter">1 / 21</span></div>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+    const counter = document.getElementById('counter');
+    const progress = document.getElementById('progress');
+    let current = 0;
+
+    function show(i) {
+      current = Math.max(0, Math.min(total - 1, i));
+      slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+      counter.textContent = (current + 1) + ' / ' + total;
+      progress.style.width = ((current + 1) / total * 100) + '%';
+      // re-highlight any code that just became visible
+      if (window.Prism) Prism.highlightAllUnder(slides[current]);
+      // update hash for deep-linking
+      history.replaceState(null, '', '#' + (current + 1));
+    }
+
+    function next() { show(current + 1); }
+    function prev() { show(current - 1); }
+
+    document.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'PageDown':
+        case ' ':
+          e.preventDefault(); next(); break;
+        case 'ArrowLeft':
+        case 'PageUp':
+          e.preventDefault(); prev(); break;
+        case 'Home':
+          e.preventDefault(); show(0); break;
+        case 'End':
+          e.preventDefault(); show(total - 1); break;
+        case 'f': case 'F':
+          e.preventDefault();
+          if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+          else document.exitFullscreen();
+          break;
+      }
+    });
+
+    // click navigation: right half = next, left half = prev
+    document.addEventListener('click', (e) => {
+      // don't hijack clicks on links
+      if (e.target.closest('a')) return;
+      const w = window.innerWidth;
+      if (e.clientX > w / 2) next(); else prev();
+    });
+
+    // deep link support
+    const initial = parseInt(location.hash.replace('#', ''), 10);
+    if (initial && !isNaN(initial)) show(initial - 1);
+    else show(0);
+  })();
+</script>
+
+</body>
+</html>
