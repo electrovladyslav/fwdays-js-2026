@@ -35,17 +35,21 @@
     padding: 0;
     width: 100%;
     height: 100%;
-    background: var(--bg);
+    background: #000;
     color: var(--fg);
     font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
     font-size: 16px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .deck {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: min(100vw, calc(100vh * 16 / 9));
+    height: min(100vh, calc(100vw * 9 / 16));
+    background: var(--bg);
     overflow: hidden;
   }
 
@@ -205,7 +209,7 @@
   }
 
   .footer {
-    position: fixed;
+    position: absolute;
     bottom: 1rem;
     left: 0;
     right: 0;
@@ -224,7 +228,7 @@
   }
 
   .progress {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     height: 3px;
@@ -276,10 +280,11 @@
   /* Avatar (slide 2) */
   .about-wrap {
     display: grid;
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: 240px auto auto;
     gap: 3rem;
     align-items: center;
-    margin-top: 1rem;
+    margin: 1rem auto 0;
+    width: fit-content;
   }
 
   .avatar {
@@ -462,9 +467,8 @@
 </head>
 <body>
 
-<div class="progress" id="progress"></div>
-
 <div class="deck" id="deck">
+<div class="progress" id="progress"></div>
 
   <!-- SLIDE 1 — Title / Hook -->
   <section class="slide title-slide active" data-slide="1">
@@ -478,44 +482,119 @@
 
   <!-- SLIDE 2 — Про мене -->
   <section class="slide" data-slide="2">
-    <span class="tag">Про мене</span>
-    <h2>Влад Єрмолін</h2>
     <div class="about-wrap">
-      <img src="avatar.jpg" alt="Vlad Yermolin" class="avatar">
+      <img src="img/avatar.jpg" alt="Vlad Yermolin" class="avatar">
       <ul>
+        <h2>Влад Єрмолін</h2>
         <li>Solution Lead @ <strong>Master of Code</strong></li>
         <li>6+ років у фронтенді → зараз архітектура AI-агентів</li>
         <li>2 коти, йога, Київ</li>
-        <li>GitHub: <code>electrovladyslav</code> · Telegram: <code>@dev_money_yoga</code></li>
+        <li>LinkedIn: <code>electrovladyslav</code></li>
+        <li>Telegram: <code>@dev_money_yoga</code></li>
       </ul>
+      <img src="img/qr_tg_cutted.png" alt="Telegram QR" style="width:240px;height:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
     </div>
   </section>
 
-  <!-- SLIDE 3 — Що ви заберете з цього залу -->
-  <section class="slide" data-slide="3">
-    <h2>Що ви заберете з цього залу</h2>
-    <ul>
+  <!-- SLIDE 3 — Takeaways -->
+  <section class="slide" data-slide="3" style="align-items: center;">
+    <h2>Takeaways</h2>
+    <ul style="display: inline-block; text-align: left;">
       <li>4 підходи до Spec-driven development — коли який застосовувати</li>
-      <li>Чесне порівняння з реального досвіду (не Twitter-хайп)</li>
-      <li>Шаблони ADR і OpenSpec, готові до використання</li>
       <li>Посилання на running example — <code>yoga-dashboard</code></li>
     </ul>
-    <p class="warn small">
-      Натхнення: <a href="https://fwdays.com/event/react-fwdays-2025/review/blueprint-driven-development-with-ai-and-tdd" class="accent" style="color: var(--accent);">Blueprint-driven development with AI and TDD</a> (React fwdays'25)
-    </p>
+    <div style="margin-top:1rem;display:flex;align-items:center;gap:1.5rem;border-left:3px solid var(--accent);padding-left:1.25rem;">
+      <p class="small muted" style="margin:0;line-height:1.6;">
+        Натхнення: <a href="https://fwdays.com/event/react-fwdays-2025/review/blueprint-driven-development-with-ai-and-tdd" style="color:var(--accent);">Blueprint-driven development with AI and TDD</a><br>
+        (React fwdays'25)
+      </p>
+      <img src="img/avatar_tdd_speaker.png" alt="TDD speaker" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid var(--accent);box-shadow:0 0 0 2px var(--bg),0 8px 24px rgba(79,209,197,0.2);flex-shrink:0;">
+    </div>
+  </section>
+
+  <!-- SLIDE 3-poll — Опитування аудиторії -->
+  <section class="slide" data-slide="3-poll">
+    <h2 style="text-align:center;">🧑‍💻 + 🤖 = ?</h2>
+    <div class="cols-2" style="margin-top:1.5rem;align-items:center;gap:4rem;">
+      <div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.9rem;">
+          <li style="display:flex;align-items:center;gap:1rem;">
+            <span style="font-size:1.75rem;">🙅‍♂️</span>
+            <span style="font-size:1.25rem;">Ніколи не використовував</span>
+          </li>
+          <li style="display:flex;align-items:center;gap:1rem;">
+            <span style="font-size:1.75rem;">😖</span>
+            <span style="font-size:1.25rem;">Пробував — не сподобалось</span>
+          </li>
+          <li style="display:flex;align-items:center;gap:1rem;">
+            <span style="font-size:1.75rem;">😢</span>
+            <span style="font-size:1.25rem;">Хотів би — не дозволяють</span>
+          </li>
+          <li style="display:flex;align-items:center;gap:1rem;">
+            <span style="font-size:1.75rem;">😻</span>
+            <span style="font-size:1.25rem;">Використовую</span>
+          </li>
+        </ul>
+        <div style="margin-top:2rem;display:flex;align-items:center;gap:1.5rem;">
+          <img src="img/mentimeter_qr_code.png" alt="Mentimeter QR" style="width:100px;height:100px;object-fit:contain;border-radius:8px;background:#fff;padding:4px;">
+          <p class="muted small" style="margin:0;line-height:1.6;">
+            <strong style="color:var(--accent);font-family:'JetBrains Mono',monospace;">menti.com</strong><br>
+            <strong style="color:var(--accent);font-family:'JetBrains Mono',monospace;">2664 7911</strong>
+          </p>
+        </div>
+      </div>
+      <div style="position:relative;padding-bottom:56.25%;padding-top:35px;height:0;overflow:hidden;border-radius:12px;flex:1;">
+        <iframe sandbox="allow-popups allow-scripts allow-same-origin allow-presentation" allowfullscreen="true" allowtransparency="true" frameborder="0" height="315" src="https://www.mentimeter.com/app/presentation/almycxdg4sa9oauoqodo3kvvi5ytkfht/embed" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:12px;" width="420"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3b — Нова роль розробника -->
+  <section class="slide" data-slide="3b">
+    <h2 style="text-align:center;">Нова роль розробника</h2>
+    <p class="subtitle" style="text-align:center;">Від "coder" до "spec architect"</p>
+    <blockquote>
+      "Я майже не пишу код сам останнім часом.<br>
+      Я пишу АІ, якими спеками описати те, що я хочу отримати.<br>
+      Перечитую їх, правлю, і знова, і знова.<br>
+      І так майже всі в компанії."
+    </blockquote>
+    <div style="margin-top:1.5rem;display:flex;align-items:center;gap:1.5rem;">
+      <img src="img/mentimeter_qr_code.png" alt="Mentimeter QR" style="width:100px;height:100px;object-fit:contain;border-radius:8px;background:#fff;padding:4px;">
+      <p class="muted small" style="margin:0;line-height:1.6;">
+        <strong style="color:var(--accent);font-family:'JetBrains Mono',monospace;">menti.com</strong><br>
+        <strong style="color:var(--accent);font-family:'JetBrains Mono',monospace;">2664 7911</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- SLIDE 3b-results — Результати голосування -->
+  <section class="slide" data-slide="3b-results">
+    <h2 style="text-align:center;">🧑‍💻 + 🤖 = ?</h2>
+    <div style="width:60%;margin:1.5rem auto 0;position:relative;padding-bottom:33.75%;height:0;overflow:hidden;border-radius:12px;">
+      <iframe sandbox="allow-popups allow-scripts allow-same-origin allow-presentation" allowfullscreen="true" allowtransparency="true" frameborder="0" height="315" src="https://www.mentimeter.com/app/presentation/almycxdg4sa9oauoqodo3kvvi5ytkfht/embed" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:12px;" width="420"></iframe>
+    </div>
   </section>
 
   <!-- SLIDE 4 — Справжня проблема: context transfer -->
   <section class="slide" data-slide="4">
-    <h2>Проблема <span class="muted">не</span> в промптингу.</h2>
-    <h2 class="accent">Проблема — у передачі <em>контексту</em>.</h2>
-    <img src="meme.jpg" alt="Toy Story meme: context is everywhere" class="meme-image">
-    <p class="muted small">Ідея в моїй голові → AI-агент. Як передати? Три симптоми того, що контекст не долетів:</p>
-    <ul class="small">
-      <li>Галюцинації (API, яких не існує)</li>
-      <li>Втрата контексту в довгих сесіях</li>
-      <li>Inconsistency між запусками</li>
-    </ul>
+    <h2 class="accent" style="text-align:center;">Проблема — у передачі <em>контексту</em>.</h2>
+    <img src="img/meme.jpg" alt="Toy Story meme: context is everywhere" class="meme-image">
+  </section>
+
+  <!-- SLIDE 4b — Симптоми контекстного провалу -->
+  <section class="slide" data-slide="4b">
+    <h2 style="text-align:center;">Два симптоми, що контекст не долетів</h2>
+    <div class="cols-2" style="margin-top:2rem;align-items:end;">
+      <div style="text-align:center;">
+        <img src="img/hallucinations.png" alt="Галюцинації" style="width:100%;height:40vh;object-fit:contain;border-radius:10px;">
+        <p style="margin-top:1rem;font-size:1.35rem;font-weight:600;">Галюцинації<br><span class="muted" style="font-size:1rem;font-weight:400;">API, яких не існує</span></p>
+      </div>
+      <div style="text-align:center;">
+        <img src="img/forget-meme.jpeg" alt="Втрата контексту" style="width:100%;height:40vh;object-fit:contain;border-radius:10px;">
+        <p style="margin-top:1rem;font-size:1.35rem;font-weight:600;">Втрата контексту<br><span class="muted" style="font-size:1rem;font-weight:400;">довга сесія, між викликами</span></p>
+      </div>
+    </div>
   </section>
 
   <!-- SLIDE 5 — Чому особливо боляче для JS-розробника -->
@@ -537,6 +616,7 @@
 
   <!-- SLIDE 6 — North Star -->
   <section class="slide title-slide" data-slide="6">
+    <div style="font-size:5rem;margin-bottom:1rem;">💎</div>
     <blockquote class="big">
       Якість коду <span class="accent">на виході</span><br>
       = якість специфікації <span class="accent">на вході</span>.
@@ -547,9 +627,8 @@
   <section class="slide" data-slide="7">
     <span class="tag">Етап 1</span>
     <h2>Plan Mode <span class="muted" style="font-size: 1.75rem; font-weight: 400;">· Cursor · Claude Code</span></h2>
-    <p class="small muted">Агент читає код → задає уточнення → пропонує план → ти approve.</p>
-<pre><code class="language-bash">● I have a clear picture. Before drafting the final plan,
-  let me confirm a few direction decisions.
+    <p class="small muted">Агент читає код → задає уточнення → фіксує те, що буде робити у плані → ти tune & approve.</p>
+<pre><code class="language-bash">● I have a clear picture. Before drafting the final plan, let me confirm a few direction decisions.
 
   ← □ Aesthetic   □ Styling   □ Scope   □ Dark mode   ✓ Submit →
 
@@ -563,15 +642,10 @@
   │ Palette:                                      │
   │   bg:      #F7F5F0   (warm off-white)         │
   │   surface: #FFFFFF                            │
-  │   primary: #6B8E7F   (sage)                   │
-  │   accent:  #D4A574   (warm sand)              │
-  │   text:    #2D3A36                            │
-  │   border:  #E5E2DB                            │
   └───────────────────────────────────────────────┘
 
   Chat about this
   Skip interview and plan immediately</code></pre>
-    <p class="muted small">Running example: <code>yoga-dashboard</code>. Агент сам пропонує рекомендацію — але тільки після того, як витягне з тебе напрямок.</p>
   </section>
 
   <!-- SLIDE 8 — Plan Mode inconsistent + grill-me -->
@@ -579,7 +653,7 @@
     <h2>Посилюємо Plan Mode через <span class="accent">custom skills</span></h2>
     <p class="small muted">Plan Mode сам <em>не витягує</em> контекст — він <strong>припускає</strong>. Рішення: skill, що примушує агента інтерв'ювати тебе.</p>
     <div style="margin-top: 1.25rem;">
-      <img src="Matt pocock.png" alt="Matt Pocock" class="author-portrait">
+      <img src="img/Matt pocock.png" alt="Matt Pocock" class="author-portrait">
       <h3 style="margin-bottom: 0.25rem;"><code>grill-me</code> by Matt Pocock</h3>
       <p class="small muted" style="margin-top: 0;">
         <a href="https://github.com/mattpocock/skills/tree/main/grill-me" style="color: var(--accent);">github.com/mattpocock/skills/grill-me</a> ·
@@ -606,19 +680,24 @@ If a question can be answered by exploring the codebase, explore
 the codebase instead.</code></pre>
   </section>
 
+  <!-- SLIDE 8b — Plan Mode відео -->
+  <section class="slide" data-slide="8b">
+    <h2 style="text-align:center;">Використання Plan Mode</h2>
+    <video controls style="display:block;margin:1.5rem auto 0;max-height:68vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
+      <source src="videos/Plan mode.mov" type="video/mp4">
+    </video>
+  </section>
+
   <!-- SLIDE 9 — Plan Mode breaks -->
   <section class="slide" data-slide="9">
-    <h2>Plan Mode: де все одно ламається</h2>
-    <div class="cols-2" style="align-items: center;">
-      <div>
-        <ul>
-          <li>Довгі сесії — контекст <strong>розмивається</strong> з кожним turn</li>
-          <li>Міжфайлові зміни — агент забуває, що робив 10 хв тому</li>
-          <li class="accent"><strong>Немає persistence</strong> — план помирає разом із сесією</li>
-        </ul>
-        <p class="warn small">Потрібна довготривала пам'ять. Далі →</p>
-      </div>
-      <img src="forget-meme.jpeg" alt="Forgetting meme" class="meme-image" style="max-width: 100%; max-height: 55vh; margin: 0;">
+    <h2 style="text-align:center;">Коли Plan Mode не вистачає</h2>
+    <div class="cols-2" style="margin-top:1.5rem;align-items:center;gap:2rem;">
+      <ul>
+        <li>Не дуже зручно працювати довго <span class="muted">(Клод — 😭 Cursor — 😏)</span></li>
+        <li>План помирає із сесією 💀</li>
+        <li>Складно описувати складну логіку</li>
+      </ul>
+      <img src="img/Jackie_Chan.png" alt="Jackie Chan" style="width:100%;max-height:55vh;object-fit:contain;border-radius:10px;">
     </div>
   </section>
 
@@ -630,23 +709,24 @@ the codebase instead.</code></pre>
     <ul>
       <li>Короткий markdown: <strong>context</strong> → <strong>decision</strong> → <strong>consequences</strong></li>
       <li>Живе в кодовій базі: <code>docs/adr/</code></li>
-      <li>Приклад з <code>yoga-dashboard</code>: <em>ADR-003: Why we chose Server Actions over API routes</em></li>
+      <li>Запускається командою <code>/adr-init</code></li>
     </ul>
-    <p class="muted small">Ідея 2011 року (Michael Nygard). Друга молодість — тепер читають не лише люди, а й агенти.</p>
+    <p class="muted small"><a href="https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions" target="_blank" style="color:var(--fg-muted);">Ідея 2011 року (Michael Nygard)</a>. Друга молодість — тепер не лише для людей, а й агентів.</p>
   </section>
 
   <!-- SLIDE 11 — Teaching agent to write ADRs -->
   <section class="slide" data-slide="11">
     <h2>Як навчити агента створювати ADR</h2>
-    <p class="small">Додаєш <code>CLAUDE.md</code> / <code>.cursorrules</code> з інструкцією:</p>
-    <pre><code class="language-markdown">## Architecture decisions
+    <p class="small">Додаєш <code>.claude/commands</code> або <code>.cursor/commands</code> з інструкцією:</p>
+    <pre><code class="language-markdown"># ADR (Architecture Decision Record) Generator
 
-When you make a non-trivial architectural choice,
-create or update an ADR in docs/adr/.
-Format: context → decision → consequences.
-Link to the ADR from any PR it affects.</code></pre>
+You are creating a detailed Architecture Decision Record for a codebase. 
+ADRs must be DEEP — describe logic and link to source files, edge cases, and nuances. 
+Not high-level summaries. **Do NOT copy-paste code** — use Markdown links to the actual files.
+...
+    </code></pre>
     <ul class="small">
-      <li>Агент сам заповнює ADR під час роботи</li>
+      <li>Генуєш ADR / плани імплементації командами і зберігаєш як контекст</li>
       <li>Наступна сесія → агент читає <code>docs/adr/</code> → розуміє історію рішень</li>
     </ul>
   </section>
@@ -658,58 +738,87 @@ Link to the ADR from any PR it affects.</code></pre>
       <div class="card">
         <h3 style="color: var(--success);">✓ Плюси</h3>
         <ul class="small">
-          <li>Легко впровадити, низький поріг входу</li>
-          <li>Люди теж читають — команда виграє</li>
+          <li>Легко впровадити - це просто файлики в <code>.claude/commands</code></li>
+          <li>Люди теж читають</li>
+          <li>Може знаходити проблеми в існуючому коді</li>
         </ul>
       </div>
       <div class="card">
         <h3 style="color: var(--danger);">✗ Мінуси</h3>
         <ul class="small">
-          <li>Non-standard формат — кожна команда винаходить свій</li>
+          <li>Немає стандартного формату — кожна команда винаходить свій</li>
           <li>Агент не завжди знає, <em>коли</em> створювати ADR</li>
-          <li>Залишається відкрите: що з <strong>feature-level</strong> специфікаціями?</li>
+          <li>Де <strong><em>source of truth</em></strong>: у ADR чи в коді?</li>
         </ul>
       </div>
     </div>
+  </section>
+
+  <!-- SLIDE 12b — ADR відео -->
+  <section class="slide" data-slide="12b">
+    <h2 style="text-align:center;">Використання ADR</h2>
+    <video controls style="display:block;margin:1.5rem auto 0;max-height:68vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
+      <source src="videos/ADR.mov" type="video/mp4">
+    </video>
   </section>
 
   <!-- SLIDE 13 — Spec Kit (collapsed) -->
   <section class="slide" data-slide="13">
     <span class="tag">Етап 2.5</span>
     <h2>GitHub Spec Kit — спробували, не зайшло</h2>
-    <p class="subtitle">"А що як формалізувати все?"</p>
+    <p class="subtitle">🤌 <a href="https://github.com/github/spec-kit" target="_blank" style="color:inherit;">від GitHub для spec-driven development</a> 🤌</p>
     <ul class="small">
-      <li>Структурована ієрархія: project → epic → feature → task</li>
-      <li>Ідея приваблива, реальність — <strong>too heavy</strong> для нашої команди</li>
-      <li>На довгій дистанції <strong>важко підтримувати</strong> — документи розбігаються з кодом</li>
+      <li>🗿 Структурована ієрархія: project → epic → feature → task</li>
+      <li>⏰ Ми додали шаблони для естімації</li>
+      <li>🐍 Встановлюється через <code>uv</code></li>
+      <li>🫪 На довгій дистанції <strong>важко підтримувати</strong> — документи розбігаються з кодом</li>
     </ul>
-    <blockquote>Good idea, wrong weight class. Для enterprise з compliance — працює. Для команди ≤ 5 — overhead &gt; value.</blockquote>
   </section>
 
   <!-- SLIDE 14 — OpenSpec what it is -->
   <section class="slide" data-slide="14">
     <span class="tag">Етап 3</span>
-    <h2>OpenSpec</h2>
-    <blockquote class="big" style="text-align: left; font-size: 2rem; padding: 1rem 0;">
-      A <span class="accent">YC-backed startup</span> (W'26) by Fission-AI — <span class="accent">lightweight and adaptable</span>.
-    </blockquote>
-    <div class="small muted" style="margin-top: 2rem;">
-      <p><strong>Core promise:</strong> "Agree before you build"</p>
-      <p><strong>Philosophy:</strong> <em>fluid not rigid · iterative not waterfall · built for brownfield not just greenfield</em></p>
-      <p><strong>Positioning:</strong> vs Spec Kit (heavyweight, Python setup) · vs Kiro (IDE-locked, Claude-only)</p>
-    </div>
+    <h2>OpenSpec - Y Combinator-backed startup</h2>
+    <p class="subtitle" style="margin-bottom:0.5rem;">
+      <a href="https://openspec.dev/" target="_blank" style="color:inherit;text-decoration:none;">промо сайт</a>
+      <span style="margin:0 0.75rem;opacity:0.4;">·</span>
+      <a href="https://github.com/Fission-AI/OpenSpec/" target="_blank" style="color:inherit;text-decoration:none;">😼Github</a>
+    </p>
+    <ul style="list-style:none;padding:0;margin-top:2rem;display:flex;flex-direction:column;gap:0.9rem;">
+
+      <li style="display:flex;align-items:center;gap:1rem;">
+        <span style="font-size:1.75rem;">📏</span>
+        <span style="font-size:1.25rem;">Гнучкий - легко розширити своєю схемою</span>
+      </li>
+      <li style="display:flex;align-items:center;gap:1rem;">
+        <span style="font-size:1.75rem;">🔄</span>
+        <span style="font-size:1.25rem;">Ітеративний - основні документи архівуются в кінці фічі</span>
+      </li>
+      <li style="display:flex;align-items:center;gap:1rem;">
+        <span style="font-size:1.75rem;">🏗️</span>
+        <span style="font-size:1.25rem;">Для нових та існуючих проєктів</span>
+      </li>
+      <li style="display:flex;align-items:center;gap:1rem;">
+        <span style="font-size:1.75rem;">📦</span>
+        <span style="font-size:1.25rem;">Легко встановити — <code>npm install -g @fission-ai/openspec@latest</code></span>
+      </li>
+      <li style="display:flex;align-items:center;gap:1rem;">
+        <span style="font-size:1.75rem;">▶️</span>
+        <span style="font-size:1.25rem;">... та запустити — <code>openspec init</code></span>
+      </li>
+    </ul>
   </section>
 
   <!-- SLIDE 15 — Anatomy -->
   <section class="slide" data-slide="15">
-    <h2>Одна change — одна папка</h2>
+    <h2>Одна fature — одна папка</h2>
     <pre><code class="language-bash">openspec/changes/add-weekly-streak-badge/
   proposal.md    # чому і що змінюється
   specs/         # requirements + scenarios
   design.md      # технічний підхід
   tasks.md       # implementation checklist</code></pre>
     <p class="small">Мінімально — <strong>4 файли, кожен з конкретною роллю</strong>.</p>
-    <p class="muted small">Running example: feature з <code>yoga-dashboard</code>.</p>
+    <p class="small">🏛️ Далі - все йде в архів.</p>
   </section>
 
   <!-- SLIDE 16 — Two entry modes -->
@@ -728,7 +837,7 @@ Link to the ADR from any PR it affects.</code></pre>
         <h3>B · Explore</h3>
         <p class="small muted">Ти ще не знаєш, що саме хочеш.</p>
         <pre><code class="language-bash">/opsx:explore [topic]</code></pre>
-        <p class="small">→ розмова, діаграми, без artifacts. Переходить у <code>propose</code>, коли ясність прийде.</p>
+        <p class="small">→ спілкуєшся у вільній формі. Переходить у <code>propose</code>, коли ясність прийде.</p>
       </div>
     </div>
     <p class="muted small" style="margin-top: 1rem;">Docs: <a href="https://github.com/Fission-AI/OpenSpec/blob/main/docs/commands.md#opsxexplore" style="color: var(--accent);">commands.md#opsxexplore</a></p>
@@ -790,72 +899,82 @@ Link to the ADR from any PR it affects.</code></pre>
     <p class="small muted">Docs: <a href="https://github.com/Fission-AI/OpenSpec/blob/main/docs/customization.md" style="color: var(--accent);">customization.md</a></p>
   </section>
 
+  <!-- SLIDE 18b — OpenSpec відео -->
+  <section class="slide" data-slide="18b">
+    <h2 style="text-align:center;">Використання OpenSpec</h2>
+    <video controls style="display:block;margin:1.5rem auto 0;max-height:68vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
+      <source src="videos/OpenSpec.mov" type="video/mp4">
+    </video>
+  </section>
+
   <!-- SLIDE 19 — Decision tree (merged) -->
   <section class="slide" data-slide="19">
-    <h2>Один decision tree, 4 відповіді</h2>
-    <div class="decision-tree">Я використовую AI для цієї задачі. Який підхід?
-                      │
-                      ▼
-          ┌──────────────────────────┐
-          │ Одноразова, &lt; 100 рядків? │
-          └──────────┬───────────────┘
-              YES ───┤── NO
-               ▼     │
-      ┌──────────┐   ▼
-      │ Plan Mode│   ┌──────────────────────────┐
-      │ + grill  │   │ Архітектурне рішення?    │
-      └──────────┘   │ (library, pattern)       │
-                     └────────────┬─────────────┘
-                         YES ─────┤── NO
-                          ▼       │
-                     ┌──────┐     ▼
-                     │ ADR  │     ┌────────────────────────┐
-                     └──────┘     │ Team &gt;10, compliance?   │
-                                  └──────────┬─────────────┘
-                                       YES ──┤── NO
-                                        ▼    │
-                                   ┌─────────┐  ▼
-                                   │ Spec Kit│  ┌───────────┐
-                                   └─────────┘  │ OpenSpec  │
-                                                │ (default) │
-                                                └───────────┘</div>
+    <h2 style="text-align:center;">Один decision tree, 4 відповіді</h2>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 960" style="max-height:58vh;width:auto;max-width:100%;display:block;margin:0.5rem auto 0;">
+      <defs>
+        <marker id="dt-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#8b949e"/>
+        </marker>
+      </defs>
+
+      <!-- Diamond 1: Задача маленька? -->
+      <polygon points="420,50 659,161 420,272 181,161" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.08)"/>
+      <text x="420" y="168" text-anchor="middle" fill="#f0f6fc" font-family="JetBrains Mono,monospace" font-size="30">Задача маленька?</text>
+
+      <!-- Diamond 2: Архітектурне рішення? -->
+      <polygon points="759,260 998,371 759,482 520,371" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.08)"/>
+      <text x="759" y="378" text-anchor="middle" fill="#f0f6fc" font-family="JetBrains Mono,monospace" font-size="30">Архітектурне рішення?</text>
+
+      <!-- Diamond 3: Team > 10? -->
+      <polygon points="1080,477 1319,588 1080,699 841,588" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.08)"/>
+      <text x="1080" y="595" text-anchor="middle" fill="#f0f6fc" font-family="JetBrains Mono,monospace" font-size="30">Team &gt; 10?</text>
+
+      <!-- Rect: Plan Mode -->
+      <rect x="50" y="338" width="254" height="116" rx="12" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.15)"/>
+      <text x="177" y="403" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono,monospace" font-size="34" font-weight="700">Plan Mode</text>
+
+      <!-- Rect: ADR -->
+      <rect x="393" y="547" width="254" height="116" rx="12" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.15)"/>
+      <text x="520" y="612" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono,monospace" font-size="34" font-weight="700">ADR</text>
+
+      <!-- Rect: Spec Kit -->
+      <rect x="715" y="771" width="254" height="116" rx="12" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.15)"/>
+      <text x="842" y="836" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono,monospace" font-size="34" font-weight="700">Spec Kit</text>
+
+      <!-- Rect: OpenSpec -->
+      <rect x="1175" y="770" width="254" height="116" rx="12" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.15)"/>
+      <text x="1302" y="835" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono,monospace" font-size="34" font-weight="700">OpenSpec</text>
+
+      <!-- Arrow 1: Diamond1 → Plan Mode (Так) -->
+      <line x1="268" y1="204" x2="172" y2="336" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
+      <text x="202" y="268" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Так</text>
+
+      <!-- Arrow 2: Diamond1 → Diamond2 (Ні) -->
+      <line x1="582" y1="198" x2="685" y2="282" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
+      <text x="650" y="228" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Ні</text>
+
+      <!-- Arrow 3: Diamond2 → ADR (Так) -->
+      <line x1="610" y1="413" x2="514" y2="545" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
+      <text x="545" y="476" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Так</text>
+
+      <!-- Arrow 4: Diamond2 → Diamond3 (Ні) -->
+      <line x1="903" y1="415" x2="1007" y2="501" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
+      <text x="968" y="450" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Ні</text>
+
+      <!-- Arrow 5: Diamond3 → Spec Kit (Так) -->
+      <line x1="933" y1="637" x2="837" y2="769" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
+      <text x="868" y="700" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Так</text>
+
+      <!-- Arrow 6: Diamond3 → OpenSpec (Ні) -->
+      <line x1="1193" y1="643" x2="1295" y2="756" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
+      <text x="1258" y="693" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Ні</text>
+    </svg>
     <div class="legend-strip">
       <div class="chip"><strong>Plan Mode</strong>session-scoped, lightweight</div>
       <div class="chip"><strong>ADR</strong>persistent, architecture</div>
       <div class="chip"><strong>Spec Kit</strong>enterprise, compliance</div>
       <div class="chip"><strong>OpenSpec</strong>balanced, default choice</div>
     </div>
-  </section>
-
-  <!-- SLIDE 20 — New role (testimonial) -->
-  <section class="slide" data-slide="20">
-    <h2>Нова роль розробника</h2>
-    <p class="subtitle">Від "coder" до "spec architect"</p>
-    <blockquote>
-      "Я особисто <strong>майже не пишу код сам</strong> останнім часом.<br>
-      Я пишу документацію, перечитую, переписую. І це складно.<br>
-      Іноді — реально складніше, ніж написати цей же код руками.<br>
-      Але коли documentation finally правильна — код виходить таким, як треба."
-    </blockquote>
-    <div class="dual-column-era">
-      <div class="era">
-        <h3>2020</h3>
-        <ul class="small">
-          <li>IDE, keyboard shortcuts</li>
-          <li>StackOverflow</li>
-          <li><code>console.log</code></li>
-        </ul>
-      </div>
-      <div class="era">
-        <h3>2026</h3>
-        <ul class="small">
-          <li>Markdown editor</li>
-          <li><code>/opsx:propose</code></li>
-          <li>Review tab, review tab, review tab</li>
-        </ul>
-      </div>
-    </div>
-    <p class="warn small">Це <strong>не легша</strong> робота. Це <strong>інша</strong> робота.</p>
   </section>
 
   <!-- SLIDE 21 — Thanks / Q&A -->
@@ -873,26 +992,23 @@ Link to the ADR from any PR it affects.</code></pre>
     </div>
     <div class="qr-row">
       <div class="qr-wrap">
-        <div class="qr-placeholder">QR: slides repo</div>
+        <div style="width:240px;height:324px;background:#0e1117;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.5);display:flex;align-items:flex-end;justify-content:center;padding-bottom:16px;">
+          <img src="img/qr_gitHub.png" alt="GitHub QR" style="width:200px;height:200px;object-fit:contain;background:#fff;padding:12px;border-radius:12px;">
+        </div>
         <div class="caption">Слайди · outline</div>
       </div>
       <div class="qr-wrap">
-        <div class="qr-placeholder">QR: yoga-dashboard</div>
-        <div class="caption">Running example</div>
+        <img src="img/qr_tg_cutted.png" alt="Telegram QR" style="width:240px;height:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+        <div class="caption">Telegram канал</div>
       </div>
     </div>
   </section>
 
-</div>
-
-<div class="footer">
-  <div class="brand">Vlad Yermolin · fwdays'26</div>
-  <div>
-    <span class="kbd">←</span> <span class="kbd">→</span> navigate ·
-    <span class="kbd">F</span> fullscreen ·
-    <span class="kbd">Home</span>/<span class="kbd">End</span> jump
+  <div class="footer">
+    <div class="brand">Vlad Yermolin · fwdays'26</div>
+    <div><span id="counter">1 / 21</span></div>
   </div>
-  <div><span id="counter">1 / 21</span></div>
+
 </div>
 
 <script>
@@ -938,13 +1054,6 @@ Link to the ADR from any PR it affects.</code></pre>
       }
     });
 
-    // click navigation: right half = next, left half = prev
-    document.addEventListener('click', (e) => {
-      // don't hijack clicks on links
-      if (e.target.closest('a')) return;
-      const w = window.innerWidth;
-      if (e.clientX > w / 2) next(); else prev();
-    });
 
     // deep link support
     const initial = parseInt(location.hash.replace('#', ''), 10);
