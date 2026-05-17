@@ -163,7 +163,9 @@
     background: var(--code-bg) !important;
     border: 1px solid var(--border);
     overflow-x: auto;
+    overflow-y: visible;
     margin: 0.75rem 0;
+    flex-shrink: 0;
   }
 
   code {
@@ -463,6 +465,49 @@
   }
 
   .small { font-size: 1.15rem; }
+
+  /* Mobile: drop 16:9 lock, let content flow */
+  @media (max-width: 768px) {
+    html, body { overflow: auto; height: auto; }
+    .deck {
+      width: 100vw;
+      height: auto;
+      min-height: 100vh;
+    }
+    .slide {
+      position: relative;
+      inset: auto;
+      padding: 2rem 1.25rem 5rem;
+      min-height: 100vh;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .slide:not(.active) { display: none; }
+    .slide h1 { font-size: 2.25rem; }
+    .slide h2 { font-size: 1.75rem; }
+    .slide h3 { font-size: 1.15rem; }
+    .slide p, .slide li { font-size: 1rem; }
+    .slide .subtitle { font-size: 1.15rem; margin-bottom: 1.5rem; }
+    .slide blockquote { font-size: 1.15rem; }
+    .slide blockquote.big { font-size: 1.5rem; padding: 1rem 0; }
+    .title-slide h1 { font-size: 2.5rem; }
+    .cols-2, .cols-3 { grid-template-columns: 1fr; gap: 1.25rem; }
+    .dual-column-era { grid-template-columns: 1fr; }
+    .legend-strip { grid-template-columns: 1fr 1fr; }
+    .about-wrap {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      text-align: center;
+      justify-items: center;
+    }
+    .avatar { width: 140px; height: 140px; }
+    pre[class*="language-"] { font-size: 0.8rem !important; padding: 0.85rem !important; }
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+    .footer { font-size: 0.75rem; padding: 0 0.75rem; }
+    .contacts { gap: 1.25rem; margin: 1.5rem 0; }
+    .qr-row { flex-direction: column; align-items: center; }
+  }
 </style>
 </head>
 <body>
@@ -471,13 +516,8 @@
 <div class="progress" id="progress"></div>
 
   <!-- SLIDE 1 — Title / Hook -->
-  <section class="slide title-slide active" data-slide="1">
-    <h1>Еволюція Spec-driven development</h1>
-    <p class="subtitle">Від Plan Mode до формальних специфікацій та OpenSpec</p>
-    <div class="meta">
-      <p><strong>Влад Єрмолін</strong> · Solution Lead @ Master of Code</p>
-      <p class="muted">JavaScript fwdays'26 · Київ · 23 травня 2026</p>
-    </div>
+  <section class="slide active" data-slide="1" style="padding:0;">
+    <img src="img/title_slide.png" alt="Еволюція Spec-driven development — Влад Єрмолін" style="width:100%;height:100%;object-fit:cover;display:block;">
   </section>
 
   <!-- SLIDE 2 — Про мене -->
@@ -489,26 +529,10 @@
         <li>Solution Lead @ <strong>Master of Code</strong></li>
         <li>6+ років у фронтенді → зараз архітектура AI-агентів</li>
         <li>2 коти, йога, Київ</li>
-        <li>LinkedIn: <code>electrovladyslav</code></li>
-        <li>Telegram: <code>@dev_money_yoga</code></li>
+        <li>LinkedIn: <a href="https://www.linkedin.com/in/electrovladyslav/" target="_blank" rel="noopener" style="color:var(--accent);"><code>electrovladyslav</code></a></li>
+        <li>Telegram: <a href="https://t.me/dev_money_yoga" target="_blank" rel="noopener" style="color:var(--accent);"><code>@dev_money_yoga</code></a></li>
       </ul>
-      <img src="img/qr_tg_cutted.png" alt="Telegram QR" style="width:240px;height:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
-    </div>
-  </section>
-
-  <!-- SLIDE 3 — Takeaways -->
-  <section class="slide" data-slide="3" style="align-items: center;">
-    <h2>Takeaways</h2>
-    <ul style="display: inline-block; text-align: left;">
-      <li>4 підходи до Spec-driven development — коли який застосовувати</li>
-      <li>Посилання на running example — <code>yoga-dashboard</code></li>
-    </ul>
-    <div style="margin-top:1rem;display:flex;align-items:center;gap:1.5rem;border-left:3px solid var(--accent);padding-left:1.25rem;">
-      <p class="small muted" style="margin:0;line-height:1.6;">
-        Натхнення: <a href="https://fwdays.com/event/react-fwdays-2025/review/blueprint-driven-development-with-ai-and-tdd" style="color:var(--accent);">Blueprint-driven development with AI and TDD</a><br>
-        (React fwdays'25)
-      </p>
-      <img src="img/avatar_tdd_speaker.png" alt="TDD speaker" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid var(--accent);box-shadow:0 0 0 2px var(--bg),0 8px 24px rgba(79,209,197,0.2);flex-shrink:0;">
+      <img src="img/linktree.png" alt="Linktree QR" style="width:240px;height:auto;border-radius:16px;background:#fff;padding:12px;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
     </div>
   </section>
 
@@ -656,8 +680,8 @@
       <img src="img/Matt pocock.png" alt="Matt Pocock" class="author-portrait">
       <h3 style="margin-bottom: 0.25rem;"><code>grill-me</code> by Matt Pocock</h3>
       <p class="small muted" style="margin-top: 0;">
-        <a href="https://github.com/mattpocock/skills/tree/main/grill-me" style="color: var(--accent);">github.com/mattpocock/skills/grill-me</a> ·
-        <a href="https://www.youtube.com/watch?v=EJyuu6zlQCg" style="color: var(--accent);">YouTube demo</a>
+        <a href="https://github.com/mattpocock/skills/tree/main/grill-me" target="_blank" rel="noopener" style="color: var(--accent);">github.com/mattpocock/skills/grill-me</a> ·
+        <a href="https://www.youtube.com/watch?v=EJyuu6zlQCg" target="_blank" rel="noopener" style="color: var(--accent);">YouTube demo</a>
       </p>
     </div>
     <div style="clear: both;"></div>
@@ -682,8 +706,9 @@ the codebase instead.</code></pre>
 
   <!-- SLIDE 8b — Plan Mode відео -->
   <section class="slide" data-slide="8b">
-    <h2 style="text-align:center;">Використання Plan Mode</h2>
-    <video controls style="display:block;margin:1.5rem auto 0;max-height:68vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
+    <h2 style="text-align:center;">Використання Plan Mode у <a href="https://github.com/electrovladyslav/yoga-dashboard" target="_blank" rel="noopener" style="color:var(--accent);">yoga-dashboard</a></h2>
+    <p class="small muted" style="text-align:center;margin:0.25rem 0 0;">PR зі змінами: <a href="https://github.com/electrovladyslav/yoga-dashboard/pull/13" target="_blank" rel="noopener" style="color:var(--accent);word-break:break-all;">#13</a></p>
+    <video controls style="display:block;margin:1rem auto 0;max-height:62vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
       <source src="videos/Plan mode.mov" type="video/mp4">
     </video>
   </section>
@@ -708,8 +733,8 @@ the codebase instead.</code></pre>
     <h3>Architecture Decision Records</h3>
     <ul>
       <li>Короткий markdown: <strong>context</strong> → <strong>decision</strong> → <strong>consequences</strong></li>
-      <li>Живе в кодовій базі: <code>docs/adr/</code></li>
-      <li>Запускається командою <code>/adr-init</code></li>
+      <li>Живе в кодовій базі: <a href="https://github.com/electrovladyslav/yoga-dashboard/tree/main/docs/adr" target="_blank" rel="noopener" style="color:var(--accent);"><code>docs/adr/</code></a></li>
+      <li>Запускається командою <a href="https://github.com/electrovladyslav/yoga-dashboard/blob/main/.claude/commands/adr/adr-init.md" target="_blank" rel="noopener" style="color:var(--accent);"><code>/adr-init</code></a></li>
     </ul>
     <p class="muted small"><a href="https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions" target="_blank" style="color:var(--fg-muted);">Ідея 2011 року (Michael Nygard)</a>. Друга молодість — тепер не лише для людей, а й агентів.</p>
   </section>
@@ -756,8 +781,9 @@ Not high-level summaries. **Do NOT copy-paste code** — use Markdown links to t
 
   <!-- SLIDE 12b — ADR відео -->
   <section class="slide" data-slide="12b">
-    <h2 style="text-align:center;">Використання ADR</h2>
-    <video controls style="display:block;margin:1.5rem auto 0;max-height:68vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
+    <h2 style="text-align:center;">Використання ADR у <a href="https://github.com/electrovladyslav/yoga-dashboard" target="_blank" rel="noopener" style="color:var(--accent);">yoga-dashboard</a></h2>
+    <p class="small muted" style="text-align:center;margin:0.25rem 0 0;">PR зі змінами: <a href="https://github.com/electrovladyslav/yoga-dashboard/pull/14" target="_blank" rel="noopener" style="color:var(--accent);word-break:break-all;">#14</a></p>
+    <video controls style="display:block;margin:1rem auto 0;max-height:62vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
       <source src="videos/ADR.mov" type="video/mp4">
     </video>
   </section>
@@ -780,9 +806,9 @@ Not high-level summaries. **Do NOT copy-paste code** — use Markdown links to t
     <span class="tag">Етап 3</span>
     <h2>OpenSpec - Y Combinator-backed startup</h2>
     <p class="subtitle" style="margin-bottom:0.5rem;">
-      <a href="https://openspec.dev/" target="_blank" style="color:inherit;text-decoration:none;">промо сайт</a>
+      <a href="https://openspec.dev/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">😎Promo</a>
       <span style="margin:0 0.75rem;opacity:0.4;">·</span>
-      <a href="https://github.com/Fission-AI/OpenSpec/" target="_blank" style="color:inherit;text-decoration:none;">😼Github</a>
+      <a href="https://github.com/Fission-AI/OpenSpec/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">😼Github</a>
     </p>
     <ul style="list-style:none;padding:0;margin-top:2rem;display:flex;flex-direction:column;gap:0.9rem;">
 
@@ -811,14 +837,39 @@ Not high-level summaries. **Do NOT copy-paste code** — use Markdown links to t
 
   <!-- SLIDE 15 — Anatomy -->
   <section class="slide" data-slide="15">
-    <h2>Одна fature — одна папка</h2>
-    <pre><code class="language-bash">openspec/changes/add-weekly-streak-badge/
+    <h2>Одна feature — одна папка</h2>
+    <pre><code class="language-bash">openspec/changes/migrate-storage-to-indexeddb/
   proposal.md    # чому і що змінюється
   specs/         # requirements + scenarios
   design.md      # технічний підхід
   tasks.md       # implementation checklist</code></pre>
+    <!-- <p class="small">Приклад: <a href="https://github.com/electrovladyslav/yoga-dashboard/blob/main/openspec/changes/archive/2026-05-10-migrate-storage-to-indexeddb/proposal.md" target="_blank" rel="noopener" style="color:var(--accent);word-break:break-all;">proposal.md з yoga-dashboard</a></p> -->
     <p class="small">Мінімально — <strong>4 файли, кожен з конкретною роллю</strong>.</p>
     <p class="small">🏛️ Далі - все йде в архів.</p>
+  </section>
+
+  <!-- SLIDE 15b — Installation -->
+  <section class="slide" data-slide="15b">
+    <h2>Інсталяція</h2>
+    <pre><code class="language-bash">openspec init .</code></pre>
+    <p class="small">Заповнюємо <a href="https://github.com/electrovladyslav/yoga-dashboard/blob/main/openspec/config.yaml" target="_blank" rel="noopener" style="color:var(--accent);"><code>openspec/config.yaml</code></a>:</p>
+    <pre><code class="language-yaml">schema: spec-driven
+
+context: |
+  ## Project
+  Yoga Dashboard — a Next.js 14 App Router application ...
+
+  ## Tech Stack
+  - Framework: Next.js 14 (App Router, TypeScript strict mode)  ...
+
+  ## Code Style &amp; Conventions
+  - Files: kebab-case  |  Variables/functions: camelCase  ...
+
+rules:
+  proposal:
+    - State the problem and motivation in ≤ 3 sentences before any solution  ...
+  tasks:
+    - Each task must be completable in ≤ 2 hours; split larger tasks  ...</code></pre>
   </section>
 
   <!-- SLIDE 16 — Two entry modes -->
@@ -831,21 +882,50 @@ Not high-level summaries. **Do NOT copy-paste code** — use Markdown links to t
         <p class="small muted">Ти знаєш, що хочеш.</p>
         <pre><code class="language-bash">/opsx:propose \
   "add weekly streak badge"</code></pre>
-        <p class="small">→ proposal, specs, design, tasks</p>
+        <p class="small">→ генерує спеки: <br> (proposal.md, design.md, task.md...)</p>
       </div>
       <div class="card">
         <h3>B · Explore</h3>
         <p class="small muted">Ти ще не знаєш, що саме хочеш.</p>
-        <pre><code class="language-bash">/opsx:explore [topic]</code></pre>
+        <pre><code class="language-bash">/opsx:explore \
+  "lets change the colors"</code></pre>
         <p class="small">→ спілкуєшся у вільній формі. Переходить у <code>propose</code>, коли ясність прийде.</p>
       </div>
     </div>
-    <p class="muted small" style="margin-top: 1rem;">Docs: <a href="https://github.com/Fission-AI/OpenSpec/blob/main/docs/commands.md#opsxexplore" style="color: var(--accent);">commands.md#opsxexplore</a></p>
+    <p class="muted small" style="margin-top: 1rem;">Docs: <a href="https://github.com/Fission-AI/OpenSpec/blob/main/docs/commands.md#opsxexplore" target="_blank" rel="noopener" style="color: var(--accent);">commands.md#opsxexplore</a></p>
+  </section>
+
+  <!-- SLIDE 16b — Worktrees -->
+  <section class="slide" data-slide="16b">
+    <h2 style="text-align:center;">Isolation: one change — one worktree</h2>
+    <div class="flow">
+      <div class="flow-node">
+        <strong>/opsx:apply</strong>
+        <small>change starts</small>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <strong>git worktree add</strong>
+        <small>.claude/worktrees/<br>2026-05-23-streak-badge/</small>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node hero">
+        <strong>PR merged</strong>
+        <small>worktree removed</small>
+      </div>
+    </div>
+    <pre><code class="language-bash">.claude/worktrees/
+  2026-05-23-streak-badge/   # ← агент тут
+main/                        # ← ти тут</code></pre>
+    <blockquote class="big" style="font-size:1.75rem;margin-top:1.25rem;">
+      Агент <span class="accent">НЕ торкається</span> твого <code>main</code>.<br>
+      Ти працюєш далі — він поруч.
+    </blockquote>
   </section>
 
   <!-- SLIDE 17 — Lifecycle HERO -->
   <section class="slide" data-slide="17">
-    <h2>Lifecycle: specs as <span class="accent">throwaway artifacts</span></h2>
+    <h2 style="text-align:center;">Lifecycle: specs as <span class="accent">throwaway artifacts</span></h2>
     <div class="flow">
       <div class="flow-node">
         <strong>/opsx:propose</strong>
@@ -896,10 +976,27 @@ Not high-level summaries. **Do NOT copy-paste code** — use Markdown links to t
       </div>
     </div>
     <p class="small muted" style="margin-top: 1rem;">Один OpenSpec → <strong>кілька агентів з різними personas</strong> → результат когерентний.</p>
-    <p class="small muted">Docs: <a href="https://github.com/Fission-AI/OpenSpec/blob/main/docs/customization.md" style="color: var(--accent);">customization.md</a></p>
+    <p class="small muted">Docs: <a href="https://github.com/Fission-AI/OpenSpec/blob/main/docs/customization.md" target="_blank" rel="noopener" style="color: var(--accent);">customization.md</a></p>
   </section>
 
   <!-- SLIDE 18b — OpenSpec відео -->
+  <!-- SLIDE 18c — Superpowers -->
+  <section class="slide" data-slide="18c">
+    <h2 style="text-align:center;">Наприклад, додати Superpowers</h2>
+    <p class="subtitle" style="text-align:center;">
+      <a href="https://github.com/obra/superpowers" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;">github.com/obra/superpowers</a>
+    </p>
+    <div class="cols-2" style="align-items:center;gap:2.5rem;">
+      <ul style="margin:0;">
+        <li>Додає TDD-дисципліну: <ul>
+          <li><a href="https://github.com/electrovladyslav/yoga-dashboard/blob/main/CLAUDE.md" target="_blank" rel="noopener" style="color:var(--accent);"><code>CLAUDE.md</code></a></li>
+          <li><a href="https://github.com/electrovladyslav/yoga-dashboard/blob/main/openspec/config.yaml#L53" target="_blank" rel="noopener" style="color:var(--accent);"><code>openspec/config.yaml</code></a></li>
+        </ul></li>
+      </ul>
+      <img src="img/superpowers.jpg" alt="Superpowers" style="width:100%;max-height:45vh;object-fit:cover;border-radius:12px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+    </div>
+  </section>
+
   <section class="slide" data-slide="18b">
     <h2 style="text-align:center;">Використання OpenSpec</h2>
     <video controls style="display:block;margin:1.5rem auto 0;max-height:68vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
@@ -977,6 +1074,35 @@ Not high-level summaries. **Do NOT copy-paste code** — use Markdown links to t
     </div>
   </section>
 
+  <!-- SLIDE 3 — Links (penultimate) -->
+  <section class="slide" data-slide="3">
+    <h2>Links</h2>
+    <ul class="small" style="margin:0;">
+      <li><a href="https://github.com/electrovladyslav/yoga-dashboard" target="_blank" rel="noopener" style="color:var(--accent);">Yoga-dashboard</a> — running example</li>
+      <li><a href="https://github.com/mattpocock/skills/tree/main/grill-me" target="_blank" rel="noopener" style="color:var(--accent);">grill-me</a> by Matt Pocock</li>
+      <li><a href="https://openspec.dev/" target="_blank" rel="noopener" style="color:var(--accent);">OpenSpec</a> — <a href="https://github.com/Fission-AI/OpenSpec/" target="_blank" rel="noopener" style="color:var(--accent);">github</a></li>
+      <li><a href="https://github.com/obra/superpowers" target="_blank" rel="noopener" style="color:var(--accent);">Superpowers</a></li>
+      <li><a href="https://context7.com/" target="_blank" rel="noopener" style="color:var(--accent);">Context7</a></li>
+    </ul>
+    <h3 style="margin-top:1.25rem;text-align:center;">Натхнення</h3>
+    <div style="display:flex;flex-direction:column;gap:1rem;align-items:stretch;max-width:780px;margin:0 auto;width:100%;">
+      <div style="display:flex;align-items:center;gap:1.5rem;justify-content:space-between;border-left:3px solid var(--accent);padding-left:1.25rem;">
+        <p class="small muted" style="margin:0;line-height:1.6;">
+          <a href="https://fwdays.com/event/react-fwdays-2025/review/blueprint-driven-development-with-ai-and-tdd" target="_blank" rel="noopener" style="color:var(--accent);">Blueprint-driven development with AI and TDD</a><br>
+          (Станіслав Долгачов, React fwdays'25)
+        </p>
+        <img src="img/avatar_tdd_speaker.png" alt="TDD speaker" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid var(--accent);box-shadow:0 0 0 2px var(--bg),0 8px 24px rgba(79,209,197,0.2);flex-shrink:0;">
+      </div>
+      <div style="display:flex;align-items:center;gap:1.5rem;justify-content:space-between;border-left:3px solid var(--accent);padding-left:1.25rem;">
+        <p class="small muted" style="margin:0;line-height:1.6;">
+          <a href="https://koldovsky.github.io/2026-dou-day-workshop/74" target="_blank" rel="noopener" style="color:var(--accent);">Надшвидка розробка з AI агентами для нових проектів</a><br>
+          (В'ячеслав Колдовський, Dou Day 2026)
+        </p>
+        <img src="img/dou-day-avatar.webp" alt="В'ячеслав Колдовський" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid var(--accent);box-shadow:0 0 0 2px var(--bg),0 8px 24px rgba(79,209,197,0.2);flex-shrink:0;">
+      </div>
+    </div>
+  </section>
+
   <!-- SLIDE 21 — Thanks / Q&A -->
   <section class="slide title-slide" data-slide="21">
     <h1 style="font-size: 4rem;">Дякую · <span class="accent">Питання?</span></h1>
@@ -992,20 +1118,17 @@ Not high-level summaries. **Do NOT copy-paste code** — use Markdown links to t
     </div>
     <div class="qr-row">
       <div class="qr-wrap">
-        <div style="width:240px;height:324px;background:#0e1117;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.5);display:flex;align-items:flex-end;justify-content:center;padding-bottom:16px;">
-          <img src="img/qr_gitHub.png" alt="GitHub QR" style="width:200px;height:200px;object-fit:contain;background:#fff;padding:12px;border-radius:12px;">
-        </div>
-        <div class="caption">Слайди · outline</div>
-      </div>
-      <div class="qr-wrap">
-        <img src="img/qr_tg_cutted.png" alt="Telegram QR" style="width:240px;height:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
-        <div class="caption">Telegram канал</div>
+        <img src="img/linktree.png" alt="Linktree QR" style="width:240px;height:240px;object-fit:contain;background:#fff;padding:16px;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+        <div class="caption">Усі посилання · linktr.ee</div>
       </div>
     </div>
   </section>
 
   <div class="footer">
-    <div class="brand">Vlad Yermolin · fwdays'26</div>
+    <div class="brand" style="display:flex;align-items:center;gap:0.75rem;">
+      <img src="img/JS_simple.svg" alt="JavaScript fwdays" style="height:36px;opacity:0.85;">
+      Vlad Yermolin · fwdays'26
+    </div>
     <div><span id="counter">1 / 21</span></div>
   </div>
 
@@ -1054,6 +1177,36 @@ Not high-level summaries. **Do NOT copy-paste code** — use Markdown links to t
       }
     });
 
+
+    // Touch swipe navigation (mobile)
+    const deck = document.getElementById('deck');
+    let touchStartX = 0, touchStartY = 0, touchStartT = 0;
+    const SWIPE_MIN = 50;          // min horizontal distance (px)
+    const SWIPE_MAX_TIME = 600;    // max duration (ms)
+    const SWIPE_RATIO = 1.5;       // |dx| must exceed |dy| * this
+
+    deck.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      const t = e.touches[0];
+      touchStartX = t.clientX;
+      touchStartY = t.clientY;
+      touchStartT = Date.now();
+    }, { passive: true });
+
+    deck.addEventListener('touchend', (e) => {
+      if (e.changedTouches.length !== 1) return;
+      // Ignore swipes that originate on interactive elements
+      const tag = (e.target.tagName || '').toLowerCase();
+      if (['a', 'button', 'video', 'iframe', 'input', 'textarea'].includes(tag)) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - touchStartX;
+      const dy = t.clientY - touchStartY;
+      const dt = Date.now() - touchStartT;
+      if (dt > SWIPE_MAX_TIME) return;
+      if (Math.abs(dx) < SWIPE_MIN) return;
+      if (Math.abs(dx) < Math.abs(dy) * SWIPE_RATIO) return; // mostly vertical → let scroll happen
+      if (dx < 0) next(); else prev();
+    }, { passive: true });
 
     // deep link support
     const initial = parseInt(location.hash.replace('#', ''), 10);
