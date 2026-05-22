@@ -467,7 +467,7 @@
   .small { font-size: 1.15rem; }
 
   /* Mobile: drop 16:9 lock, let content flow */
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     html, body { overflow: auto; height: auto; }
     .deck {
       width: 100vw;
@@ -492,6 +492,15 @@
     .slide blockquote.big { font-size: 1.5rem; padding: 1rem 0; }
     .title-slide h1 { font-size: 2.5rem; }
     .cols-2, .cols-3 { grid-template-columns: 1fr; gap: 1.25rem; }
+    .slide[data-slide="3"] .cols-2 {
+      grid-template-columns: 1fr !important;
+      width: 100% !important;
+      gap: 2rem !important;
+    }
+    .slide[data-slide="3b-results"] > div {
+      width: 100% !important;
+      padding-bottom: 56.25% !important;
+    }
     .dual-column-era { grid-template-columns: 1fr; }
     .legend-strip { grid-template-columns: 1fr 1fr; }
     .about-wrap {
@@ -526,10 +535,10 @@
       <img src="img/avatar.jpg" alt="Vlad Yermolin" class="avatar">
       <ul>
         <h2>Влад Єрмолін</h2>
-        <li>Solution Lead @ <strong>Master of Code</strong></li>
+        <li>Solution Lead @ <strong>Master of Code Global</strong></li>
         <li>6+ років у фронтенді → зараз архітектура AI-агентів</li>
         <li>2 коти, йога, Київ</li>
-        <li>LinkedIn: <a href="https://www.linkedin.com/in/electrovladyslav/" target="_blank" rel="noopener" style="color:var(--accent);"><code>electrovladyslav</code></a></li>
+        <li>GitHub/LinkedIn: <a href="https://www.linkedin.com/in/electrovladyslav/" target="_blank" rel="noopener" style="color:var(--accent);"><code>electrovladyslav</code></a></li>
         <li>Telegram: <a href="https://t.me/dev_money_yoga" target="_blank" rel="noopener" style="color:var(--accent);"><code>@dev_money_yoga</code></a></li>
       </ul>
       <div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">
@@ -576,6 +585,28 @@
     </div>
   </section>
 
+  <!-- SLIDE 3c — Два табори: бояться vs надихаються -->
+  <section class="slide" data-slide="3c">
+    <h2 style="text-align:center;">Сьогодні IT-світ поділився на два табори</h2>
+    <div class="cols-2" style="margin-top:2rem;align-items:end;gap:3rem;">
+      <div style="text-align:center;">
+        <img src="img/drake_no.png" alt="Бояться AI" style="width:100%;height:45vh;object-fit:contain;border-radius:10px;">
+        <p class="small muted" style="margin-top:1rem;font-size:1.25rem;">Бояться AI</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="img/drake_yes.png" alt="Надихаються AI" style="width:100%;height:45vh;object-fit:contain;border-radius:10px;">
+        <p class="small muted" style="margin-top:1rem;font-size:1.25rem;">Надихаються AI</p>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem;display:flex;align-items:center;gap:1.5rem;">
+      <img src="img/mentimeter_qr_code.png" alt="Mentimeter QR" style="width:100px;height:100px;object-fit:contain;border-radius:8px;background:#fff;padding:4px;">
+      <p class="muted small" style="margin:0;line-height:1.6;">
+        <a href="https://www.menti.com/alzc2hu98zeq" target="_blank" rel="noopener" style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-weight:700;">menti.com</a><br>
+        <strong style="color:var(--accent);font-family:'JetBrains Mono',monospace;">2664 7911</strong>
+      </p>
+    </div>
+  </section>
+
   <!-- SLIDE 3b — Нова роль розробника -->
   <section class="slide" data-slide="3b">
     <h2 style="text-align:center;">Нова роль розробника</h2>
@@ -583,7 +614,7 @@
     <blockquote>
       "Я майже не пишу код сам останнім часом.<br>
       Я пишу АІ, якими спеками описати те, що я хочу отримати.<br>
-      Перечитую їх, правлю, і знова, і знова.<br>
+      Перечитую їх, і правлю, і знов перечитую, і правлю...<br>
       І так майже всі в компанії."
     </blockquote>
     <div style="margin-top:1.5rem;display:flex;align-items:center;gap:1.5rem;">
@@ -626,9 +657,9 @@
 
   <!-- SLIDE 5 — Чому особливо боляче для JS-розробника -->
   <section class="slide" data-slide="5">
-    <h2>Чому це <em>особливо</em> боляче для JS-розробника</h2>
+    <h2>Чому це <em>особливо</em> боляче для JS/TS-розробника?</h2>
     <ul>
-      <li>JavaScript ecosystem = постійна зміна API <span class="muted">(Next.js App Router, Bun/Deno, нові TS features, framework churn)</span></li>
+      <li>Постійна зміна API: <span class="muted">Next.js, Bun/Deno, нові TS features, framework churn.</span></li>
       <li class="accent"><strong>AI без контексту пише код під застарілі версії.</strong></li>
     </ul>
     <h3 style="margin-top: 2rem;">Counter-measure: <code>Context7</code> MCP</h3>
@@ -711,8 +742,8 @@ the codebase instead.</code></pre>
   <section class="slide" data-slide="8b">
     <h2 style="text-align:center;">Використання Plan Mode у <a href="https://github.com/electrovladyslav/yoga-dashboard" target="_blank" rel="noopener" style="color:var(--accent);">yoga-dashboard</a></h2>
     <p class="small muted" style="text-align:center;margin:0.25rem 0 0;">PR зі змінами: <a href="https://github.com/electrovladyslav/yoga-dashboard/pull/13" target="_blank" rel="noopener" style="color:var(--accent);word-break:break-all;">#13</a></p>
-    <video controls style="display:block;margin:1rem auto 0;max-height:62vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
-      <source src="videos/Plan mode.mov" type="video/mp4">
+    <video controls muted style="display:block;margin:1rem auto 0;max-height:62vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
+      <source src="videos/Plan_mode_new.MOV" type="video/mp4">
     </video>
   </section>
 
@@ -744,6 +775,15 @@ the codebase instead.</code></pre>
     <p class="muted small"><a href="https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions" target="_blank" style="color:var(--fg-muted);">Ідея 2011 року (Michael Nygard)</a>. Друга молодість — тепер не лише для людей, а й агентів.</p>
   </section>
 
+  <!-- SLIDE 12b — ADR відео -->
+  <section class="slide" data-slide="12b">
+    <h2 style="text-align:center;">Використання ADR у <a href="https://github.com/electrovladyslav/yoga-dashboard" target="_blank" rel="noopener" style="color:var(--accent);">yoga-dashboard</a></h2>
+    <p class="small muted" style="text-align:center;margin:0.25rem 0 0;">PR зі змінами: <a href="https://github.com/electrovladyslav/yoga-dashboard/pull/14" target="_blank" rel="noopener" style="color:var(--accent);word-break:break-all;">#14</a></p>
+    <video controls muted style="display:block;margin:1rem auto 0;max-height:62vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
+      <source src="videos/ADR_new.MOV" type="video/mp4">
+    </video>
+  </section>
+
   <!-- SLIDE 12 — ADR pros/cons -->
   <section class="slide" data-slide="12">
     <h2>ADR: плюси і мінуси</h2>
@@ -767,15 +807,6 @@ the codebase instead.</code></pre>
     </div>
   </section>
 
-  <!-- SLIDE 12b — ADR відео -->
-  <section class="slide" data-slide="12b">
-    <h2 style="text-align:center;">Використання ADR у <a href="https://github.com/electrovladyslav/yoga-dashboard" target="_blank" rel="noopener" style="color:var(--accent);">yoga-dashboard</a></h2>
-    <p class="small muted" style="text-align:center;margin:0.25rem 0 0;">PR зі змінами: <a href="https://github.com/electrovladyslav/yoga-dashboard/pull/14" target="_blank" rel="noopener" style="color:var(--accent);word-break:break-all;">#14</a></p>
-    <video controls style="display:block;margin:1rem auto 0;max-height:62vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
-      <source src="videos/ADR.mov" type="video/mp4">
-    </video>
-  </section>
-
   <!-- SLIDE 13 — Spec Kit (collapsed) -->
   <section class="slide" data-slide="13">
     <span class="tag">Етап 2.5</span>
@@ -785,6 +816,7 @@ the codebase instead.</code></pre>
       <li>🗿 Структурована ієрархія: project → epic → feature → task</li>
       <li>⏰ Ми додали шаблони для естімації</li>
       <li>🐍 Встановлюється через <code>uv</code></li>
+      <li>✅ Перевіряє сам свої спеки</li>
       <li>🫪 На довгій дистанції <strong>важко підтримувати</strong> — документи розбігаються з кодом</li>
     </ul>
   </section>
@@ -851,14 +883,14 @@ rules:
     <div class="cols-2" style="margin-top: 1.5rem;">
       <div class="card">
         <h3>A · Propose</h3>
-        <p class="small muted">Ти знаєш, що хочеш.</p>
+        <p class="small muted">Ти точно знаєш, що тобі треба зробити.</p>
         <pre><code class="language-bash">/opsx:propose \
   "add weekly streak badge"</code></pre>
         <p class="small">→ генерує спеки: <br> (proposal.md, design.md, task.md...)</p>
       </div>
       <div class="card">
         <h3>B · Explore</h3>
-        <p class="small muted">Ти ще не знаєш, що саме хочеш.</p>
+        <p class="small muted">Вимоги ще не зовсім зрозумілі.</p>
         <pre><code class="language-bash">/opsx:explore \
   "lets change the colors"</code></pre>
         <p class="small">→ спілкуєшся у вільній формі. Переходить у <code>propose</code>, коли ясність прийде.</p>
@@ -898,7 +930,7 @@ rules:
       <pre style="margin:0;"><code class="language-bash">openspec/changes/archive/2026-05-10-migrate-storage-to-indexeddb/</code></pre>
     </div>
     <blockquote class="big" style="font-size:2rem;margin-top:1.25rem;text-align:center;">
-      Ти <span class="accent">НЕ підтримуєш</span> документацію.<br>
+      Тобі <span class="accent">не потрібно підтримувати</span> документацію вручну.<br>
       Archive — і рухаєшся далі.
     </blockquote>
   </section>
@@ -965,9 +997,10 @@ rules:
   </section>
 
   <section class="slide" data-slide="18b">
-    <h2 style="text-align:center;">Використання OpenSpec</h2>
-    <video controls style="display:block;margin:1.5rem auto 0;max-height:68vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
-      <source src="videos/OpenSpec.mov" type="video/mp4">
+    <h2 style="text-align:center;">Використання OpenSpec у <a href="https://github.com/electrovladyslav/yoga-dashboard/tree/main/openspec" target="_blank" rel="noopener" style="color:var(--accent);">yoga-dashboard</a></h2>
+    <p class="small muted" style="text-align:center;margin:0.25rem 0 0;">PR зі змінами: <a href="https://github.com/electrovladyslav/yoga-dashboard/pull/16" target="_blank" rel="noopener" style="color:var(--accent);word-break:break-all;">#16</a></p>
+    <video controls muted style="display:block;margin:1.5rem auto 0;max-height:62vh;max-width:100%;border-radius:12px;border:1px solid var(--border);">
+      <source src="videos/OpenSpec_new.MOV" type="video/mp4">
     </video>
   </section>
 
@@ -982,62 +1015,59 @@ rules:
       </defs>
 
       <!-- Diamond 1: Задача маленька? -->
-      <polygon points="420,50 659,161 420,272 181,161" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.08)"/>
-      <text x="420" y="168" text-anchor="middle" fill="#f0f6fc" font-family="JetBrains Mono,monospace" font-size="30">Задача маленька?</text>
-
-      <!-- Diamond 2: Архітектурне рішення? -->
-      <polygon points="759,260 998,371 759,482 520,371" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.08)"/>
-      <text x="759" y="378" text-anchor="middle" fill="#f0f6fc" font-family="JetBrains Mono,monospace" font-size="30">Архітектурне рішення?</text>
-
-      <!-- Diamond 3: Team > 10? -->
-      <polygon points="1080,477 1319,588 1080,699 841,588" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.08)"/>
-      <text x="1080" y="595" text-anchor="middle" fill="#f0f6fc" font-family="JetBrains Mono,monospace" font-size="30">Team &gt; 10?</text>
+      <polygon points="260,60 480,170 260,280 40,170" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.08)"/>
+      <text x="260" y="178" text-anchor="middle" fill="#f0f6fc" font-family="JetBrains Mono,monospace" font-size="28">Задача маленька?</text>
 
       <!-- Rect: Plan Mode -->
-      <rect x="50" y="338" width="254" height="116" rx="12" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.15)"/>
-      <text x="177" y="403" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono,monospace" font-size="34" font-weight="700">Plan Mode</text>
+      <rect x="623" y="112" width="254" height="116" rx="12" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.15)"/>
+      <text x="750" y="177" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono,monospace" font-size="34" font-weight="700">Plan Mode</text>
+
+      <!-- Diamond 2: Архітектурне рішення чи фіча? -->
+      <polygon points="260,360 480,470 260,580 40,470" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.08)"/>
+      <text x="260" y="463" text-anchor="middle" fill="#f0f6fc" font-family="JetBrains Mono,monospace" font-size="26">Архітектурне рішення</text>
+      <text x="260" y="495" text-anchor="middle" fill="#f0f6fc" font-family="JetBrains Mono,monospace" font-size="26">чи фіча?</text>
 
       <!-- Rect: ADR -->
-      <rect x="393" y="547" width="254" height="116" rx="12" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.15)"/>
-      <text x="520" y="612" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono,monospace" font-size="34" font-weight="700">ADR</text>
-
-      <!-- Rect: Spec Kit -->
-      <rect x="715" y="771" width="254" height="116" rx="12" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.15)"/>
-      <text x="842" y="836" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono,monospace" font-size="34" font-weight="700">Spec Kit</text>
+      <rect x="623" y="412" width="254" height="116" rx="12" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.15)"/>
+      <text x="750" y="477" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono,monospace" font-size="34" font-weight="700">ADR</text>
 
       <!-- Rect: OpenSpec -->
-      <rect x="1175" y="770" width="254" height="116" rx="12" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.15)"/>
-      <text x="1302" y="835" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono,monospace" font-size="34" font-weight="700">OpenSpec</text>
+      <rect x="133" y="712" width="254" height="116" rx="12" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.15)"/>
+      <text x="260" y="777" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono,monospace" font-size="34" font-weight="700">OpenSpec</text>
 
-      <!-- Arrow 1: Diamond1 → Plan Mode (Так) -->
-      <line x1="268" y1="204" x2="172" y2="336" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
-      <text x="202" y="268" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Так</text>
+      <!-- Separate: Diamond Цікаво спробувати? -->
+      <polygon points="1240,60 1460,170 1240,280 1020,170" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.08)"/>
+      <text x="1240" y="178" text-anchor="middle" fill="#f0f6fc" font-family="JetBrains Mono,monospace" font-size="28">Цікаво спробувати?</text>
 
-      <!-- Arrow 2: Diamond1 → Diamond2 (Ні) -->
-      <line x1="582" y1="198" x2="685" y2="282" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
-      <text x="650" y="228" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Ні</text>
+      <!-- Rect: Spec Kit -->
+      <rect x="1113" y="412" width="254" height="116" rx="12" stroke="#4fd1c5" stroke-width="2" fill="rgba(79,209,197,0.15)"/>
+      <text x="1240" y="477" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono,monospace" font-size="34" font-weight="700">Spec Kit</text>
 
-      <!-- Arrow 3: Diamond2 → ADR (Так) -->
-      <line x1="610" y1="413" x2="514" y2="545" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
-      <text x="545" y="476" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Так</text>
+      <!-- Arrow: D1 → Plan Mode (Так) -->
+      <line x1="480" y1="170" x2="618" y2="170" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
+      <text x="549" y="156" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Так</text>
 
-      <!-- Arrow 4: Diamond2 → Diamond3 (Ні) -->
-      <line x1="903" y1="415" x2="1007" y2="501" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
-      <text x="968" y="450" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Ні</text>
+      <!-- Arrow: D1 → D2 (Ні) -->
+      <line x1="260" y1="280" x2="260" y2="358" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
+      <text x="240" y="324" text-anchor="end" fill="#8b949e" font-family="sans-serif" font-size="26">Ні</text>
 
-      <!-- Arrow 5: Diamond3 → Spec Kit (Так) -->
-      <line x1="933" y1="637" x2="837" y2="769" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
-      <text x="868" y="700" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Так</text>
+      <!-- Arrow: D2 → ADR (Арх рішення) -->
+      <line x1="480" y1="470" x2="618" y2="470" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
+      <text x="549" y="456" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Арх рішення</text>
 
-      <!-- Arrow 6: Diamond3 → OpenSpec (Ні) -->
-      <line x1="1193" y1="643" x2="1295" y2="756" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
-      <text x="1258" y="693" text-anchor="middle" fill="#8b949e" font-family="sans-serif" font-size="26">Ні</text>
+      <!-- Arrow: D2 → OpenSpec (Фіча) -->
+      <line x1="260" y1="580" x2="260" y2="708" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
+      <text x="240" y="649" text-anchor="end" fill="#8b949e" font-family="sans-serif" font-size="26">Фіча</text>
+
+      <!-- Arrow: Цікаво → Spec Kit (Так) -->
+      <line x1="1240" y1="280" x2="1240" y2="408" stroke="#8b949e" stroke-width="2" marker-end="url(#dt-arrow)"/>
+      <text x="1220" y="349" text-anchor="end" fill="#8b949e" font-family="sans-serif" font-size="26">Так</text>
     </svg>
     <div class="legend-strip">
       <div class="chip"><strong>Plan Mode</strong>session-scoped, lightweight</div>
       <div class="chip"><strong>ADR</strong>persistent, architecture</div>
-      <div class="chip"><strong>Spec Kit</strong>enterprise, compliance</div>
       <div class="chip"><strong>OpenSpec</strong>balanced, default choice</div>
+      <div class="chip"><strong>Spec Kit</strong>descriptive specs, окремий шлях</div>
     </div>
   </section>
 
@@ -1081,7 +1111,7 @@ rules:
     <h1 style="font-size: 4rem;">Дякую · <span class="accent">Питання?</span></h1>
     <div class="contacts">
       <div class="contact">
-        <span class="label">GitHub</span>
+        <span class="label">GitHub/LinkedIn</span>
         <span class="value">electrovladyslav</span>
       </div>
       <div class="contact">
